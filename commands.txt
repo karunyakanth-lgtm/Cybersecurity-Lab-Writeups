@@ -1,0 +1,17 @@
+# HTB Fawn — Command Cheat Sheet
+
+# Recon
+nmap -sC -sV -oN nmap_initial.txt <TARGET_IP>
+
+# FTP
+ftp <TARGET_IP>
+
+# Inside FTP
+ls
+dir
+pwd
+get flag.txt
+bye
+
+# Read downloaded flag
+cat flag.txt
