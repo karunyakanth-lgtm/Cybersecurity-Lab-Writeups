@@ -1,0 +1,16 @@
+# Sensitive files
+.env
+*.key
+*.pem
+*.ovpn
+credentials.txt
+secrets.txt
+flag.txt
+flags.txt
+target_ip.txt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

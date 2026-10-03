@@ -1,178 +1,189 @@
-# 🐱 Hack The Box — Meow
+# 🦌 Hack The Box — Fawn
 
-![Hack The Box](https://img.shields.io/badge/Hack%20The%20Box-Meow-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black)
-![Difficulty](https://img.shields.io/badge/Difficulty-Very%20Easy-success?style=for-the-badge)
-![OS](https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Pwned-9FEF00?style=for-the-badge)
+![Hack The Box](https://img.shields.io/badge/Platform-Hack%20The%20Box-black)
+![Difficulty](https://img.shields.io/badge/Difficulty-Very%20Easy-00A4EF)
+![Status](https://img.shields.io/badge/Status-Pwned-success)
+![Focus](https://img.shields.io/badge/Focus-FTP%20Enumeration-blue)
 
-> Beginner Hack The Box machine focused on reconnaissance, service enumeration, Telnet, and initial access.
+> Beginner-friendly HTB machine demonstrating FTP enumeration and anonymous access.
 
-## 📋 Machine Information
+## Machine Information
 
 | Field | Details |
 |---|---|
 | Platform | Hack The Box |
-| Machine | Meow |
+| Machine | Fawn |
+| Machine ID | 393 |
 | Difficulty | Very Easy |
 | OS | Linux |
-| Primary Service | Telnet |
+| Primary Service | FTP |
+| Port | 21/TCP |
+| Vulnerability | Anonymous FTP access |
 | Status | ✅ Pwned |
+| Completion | 03 October 2026 |
 
-## ⛓️ Attack Chain
+## Attack Chain
 
 ```text
 Target
-  ↓
+  │
+  ▼
 Nmap Enumeration
-  ↓
-Port 23 / Telnet
-  ↓
-Service Enumeration
-  ↓
-Authentication
-  ↓
-Remote Shell
-  ↓
-Flag Discovery
+  │
+  ▼
+TCP/21 — FTP
+  │
+  ▼
+Anonymous Login
+  │
+  ▼
+Directory Enumeration
+  │
+  ▼
+flag.txt discovered
+  │
+  ▼
+get flag.txt
+  │
+  ▼
+✅ PWNED
 ```
 
-## 1. 🔎 Reconnaissance
+## Walkthrough
 
-Verify connectivity to the HTB target:
+### 1. Reconnaissance
 
 ```bash
-ping -c 4 <TARGET_IP>
+nmap -sC -sV -oN nmap_initial.txt <TARGET_IP>
 ```
 
-![Ping Test](screenshots/01-ping.png)
+The scan identifies FTP running on TCP port 21.
 
-## 2. 🛰️ Nmap Enumeration
-
-Run service and default-script detection:
+### 2. Connect to FTP
 
 ```bash
-nmap -sC -sV <TARGET_IP>
+ftp <TARGET_IP>
 ```
 
-The scan identified an exposed Telnet service on port 23.
+Test anonymous authentication:
 
 ```text
-PORT   STATE SERVICE
-23/tcp open  telnet
+Username: anonymous
+Password: <blank / accepted anonymous password>
 ```
 
-![Nmap Scan](screenshots/02-nmap.png)
+A successful login indicates that anonymous FTP access is enabled.
 
-## 3. 🔐 Telnet Enumeration
+### 3. Enumerate Files
 
-Connect to the exposed Telnet service:
+Inside the FTP session:
 
-```bash
-telnet <TARGET_IP> 23
-```
-
-![Telnet](screenshots/03-telnet.png)
-
-## 4. 💻 Initial Access
-
-After successful authentication using the credentials intended for the HTB lab, remote shell access was obtained.
-
-Verify the current user:
-
-```bash
-whoami
-```
-
-Check system information:
-
-```bash
-uname -a
-```
-
-![Shell Access](screenshots/04-shell.png)
-
-## 5. 🚩 Flag Discovery
-
-Perform basic filesystem enumeration:
-
-```bash
-pwd
+```ftp
 ls
+dir
+pwd
 ```
 
-The required flag was then located and displayed with:
-
-```bash
-cat <FLAG_FILE>
-```
-
-The actual flag is intentionally **not published** in this repository.
-
-![Flag Discovery](screenshots/05-flag.png)
-
-## 🧠 What I Learned
-
-### Enumeration comes first
-
-Before attempting exploitation, identify the services exposed by the target.
-
-### Nmap is essential
-
-The following command quickly revealed the available attack surface:
-
-```bash
-nmap -sC -sV <TARGET_IP>
-```
-
-### Telnet
-
-Telnet is an older remote-access protocol and does not provide the secure encrypted communication associated with modern alternatives such as SSH.
-
-### Methodology
+The accessible directory contains:
 
 ```text
-Recon
- ↓
-Enumeration
- ↓
-Identify Attack Surface
- ↓
-Initial Access
- ↓
-Filesystem Enumeration
- ↓
-Objective
+flag.txt
 ```
 
-## 🛠️ Tools Used
+### 4. Download the Flag
 
-| Tool | Purpose |
-|---|---|
-| Nmap | Reconnaissance and service enumeration |
-| Telnet | Remote service connection |
-| Kali Linux | Security testing environment |
-| Linux CLI | System enumeration |
+```ftp
+get flag.txt
+bye
+```
 
-## 💻 Commands Reference
+Then read it locally:
 
 ```bash
-ping -c 4 <TARGET_IP>
-nmap -sC -sV <TARGET_IP>
-telnet <TARGET_IP> 23
-whoami
-uname -a
-pwd
-ls
-cat <FLAG_FILE>
+cat flag.txt
 ```
 
-## ⚠️ Disclaimer
+✅ Flag successfully retrieved.
 
-This walkthrough was performed in the authorized Hack The Box lab environment.
+> The actual flag is intentionally excluded from this public repository.
 
-Use these techniques only against systems you own or have explicit permission to test.
+## Commands
 
-## 👨‍💻 Author
+```bash
+nmap -sC -sV -oN nmap_initial.txt <TARGET_IP>
+ftp <TARGET_IP>
+```
 
-**Karunya Kanth**  
-B.Tech CSE — Cybersecurity Student | Sasi Engineering
+Inside FTP:
+
+```ftp
+ls
+dir
+pwd
+get flag.txt
+bye
+```
+
+Local:
+
+```bash
+cat flag.txt
+```
+
+## Security Analysis
+
+### Finding
+
+Anonymous FTP access allowed unauthenticated users to access files on the server.
+
+### Impact
+
+An attacker able to reach the FTP service could potentially:
+
+- Browse exposed directories
+- Download accessible files
+- Access sensitive information
+- Abuse additional permissions if write access is available
+
+### Defensive Recommendations
+
+- Disable anonymous FTP unless explicitly required.
+- Do not store sensitive files in publicly accessible directories.
+- Prefer encrypted file-transfer protocols such as SFTP where appropriate.
+- Apply least-privilege permissions.
+- Restrict unnecessary network exposure.
+- Monitor FTP authentication and file-access logs.
+
+## Skills Demonstrated
+
+- Network reconnaissance
+- Nmap service enumeration
+- FTP enumeration
+- Anonymous authentication testing
+- File discovery
+- File retrieval
+- Linux command line
+- Security documentation
+
+## Evidence
+
+Add screenshots to `screenshots/`:
+
+```text
+01-nmap-scan.png
+02-ftp-login.png
+03-directory-listing.png
+04-download-flag.png
+05-final-result.png
+```
+
+## Completion
+
+**Machine:** Fawn  
+**HTB Machine ID:** 393  
+**Status:** ✅ Pwned  
+**Completed:** 03 October 2026
+
+## Disclaimer
+
+This walkthrough documents activity performed in the authorized Hack The Box environment. Use these techniques only on systems you own or have explicit permission to test.
