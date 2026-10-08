@@ -1,178 +1,88 @@
-# 🐱 Hack The Box — Meow
+# 🔐 Cybersecurity Lab Writeups
 
-![Hack The Box](https://img.shields.io/badge/Hack%20The%20Box-Meow-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black)
-![Difficulty](https://img.shields.io/badge/Difficulty-Very%20Easy-success?style=for-the-badge)
-![OS](https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Pwned-9FEF00?style=for-the-badge)
+> **Hands-on cybersecurity learning by Karunya Kanth**
 
-> Beginner Hack The Box machine focused on reconnaissance, service enumeration, Telnet, and initial access.
+This repository documents my progress through authorized cybersecurity training platforms, security labs, networking exercises, and tool-based learning.
 
-## 📋 Machine Information
-
-| Field | Details |
-|---|---|
-| Platform | Hack The Box |
-| Machine | Meow |
-| Difficulty | Very Easy |
-| OS | Linux |
-| Primary Service | Telnet |
-| Status | ✅ Pwned |
-
-## ⛓️ Attack Chain
+## 🧭 Learning Path
 
 ```text
-Target
-  ↓
-Nmap Enumeration
-  ↓
-Port 23 / Telnet
-  ↓
+Linux & Networking
+       ↓
+Reconnaissance
+       ↓
 Service Enumeration
-  ↓
-Authentication
-  ↓
-Remote Shell
-  ↓
-Flag Discovery
+       ↓
+Web / Network Security
+       ↓
+CTF Labs
+       ↓
+Cybersecurity Projects
 ```
 
-## 1. 🔎 Reconnaissance
+## 🏴 Hack The Box
 
-Verify connectivity to the HTB target:
+I use Hack The Box to practice real-world security methodology in an authorized environment.
 
-```bash
-ping -c 4 <TARGET_IP>
-```
+### Completed
 
-![Ping Test](screenshots/01-ping.png)
+- 🐱 [Meow](./HTB/Meow/) — Nmap, Telnet, Linux enumeration
+- 🦊 [Fawn](./HTB/Fawn/) — FTP and service enumeration
+- 💃 [Dancing](./HTB/Dancing/) — SMB enumeration
+- 🛠️ [Make](./HTB/Make/) — service/web enumeration
 
-## 2. 🛰️ Nmap Enumeration
+→ [View HTB section](./HTB/)
 
-Run service and default-script detection:
+## 🧪 Root-Me
 
-```bash
-nmap -sC -sV <TARGET_IP>
-```
+### In Progress
 
-The scan identified an exposed Telnet service on port 23.
+- 🔑 Kerberos — currently learning and documenting the challenge
 
-```text
-PORT   STATE SERVICE
-23/tcp open  telnet
-```
+→ [View Root-Me section](./Root-Me/)
 
-![Nmap Scan](screenshots/02-nmap.png)
+## 🧰 Tools & Skills
 
-## 3. 🔐 Telnet Enumeration
+→ [Security Tools reference](./Tools/)
 
-Connect to the exposed Telnet service:
+Current focus:
 
-```bash
-telnet <TARGET_IP> 23
-```
+- Kali Linux
+- Linux CLI
+- Nmap
+- Wireshark
+- Telnet
+- FTP
+- SMB
+- Networking fundamentals
+- Reconnaissance
+- Service enumeration
 
-![Telnet](screenshots/03-telnet.png)
+## 📚 What I Document
 
-## 4. 💻 Initial Access
+Each lab/writeup aims to capture:
 
-After successful authentication using the credentials intended for the HTB lab, remote shell access was obtained.
+1. Reconnaissance
+2. Enumeration
+3. Attack surface
+4. Initial access
+5. System/service analysis
+6. Commands used
+7. Lessons learned
 
-Verify the current user:
+## ⚠️ Ethics & Disclaimer
 
-```bash
-whoami
-```
+All techniques documented here are intended for **authorized labs, CTFs, and systems where I have permission to test**.
 
-Check system information:
+Flags, credentials, and sensitive challenge information are not intentionally published.
 
-```bash
-uname -a
-```
-
-![Shell Access](screenshots/04-shell.png)
-
-## 5. 🚩 Flag Discovery
-
-Perform basic filesystem enumeration:
-
-```bash
-pwd
-ls
-```
-
-The required flag was then located and displayed with:
-
-```bash
-cat <FLAG_FILE>
-```
-
-The actual flag is intentionally **not published** in this repository.
-
-![Flag Discovery](screenshots/05-flag.png)
-
-## 🧠 What I Learned
-
-### Enumeration comes first
-
-Before attempting exploitation, identify the services exposed by the target.
-
-### Nmap is essential
-
-The following command quickly revealed the available attack surface:
-
-```bash
-nmap -sC -sV <TARGET_IP>
-```
-
-### Telnet
-
-Telnet is an older remote-access protocol and does not provide the secure encrypted communication associated with modern alternatives such as SSH.
-
-### Methodology
-
-```text
-Recon
- ↓
-Enumeration
- ↓
-Identify Attack Surface
- ↓
-Initial Access
- ↓
-Filesystem Enumeration
- ↓
-Objective
-```
-
-## 🛠️ Tools Used
-
-| Tool | Purpose |
-|---|---|
-| Nmap | Reconnaissance and service enumeration |
-| Telnet | Remote service connection |
-| Kali Linux | Security testing environment |
-| Linux CLI | System enumeration |
-
-## 💻 Commands Reference
-
-```bash
-ping -c 4 <TARGET_IP>
-nmap -sC -sV <TARGET_IP>
-telnet <TARGET_IP> 23
-whoami
-uname -a
-pwd
-ls
-cat <FLAG_FILE>
-```
-
-## ⚠️ Disclaimer
-
-This walkthrough was performed in the authorized Hack The Box lab environment.
-
-Use these techniques only against systems you own or have explicit permission to test.
-
-## 👨‍💻 Author
+## 👨‍💻 About Me
 
 **Karunya Kanth**  
 B.Tech CSE — Cybersecurity Student | Sasi Engineering
+
+Interested in **Cybersecurity • Linux • Networking • Python • AI/ML**
+
+---
+
+⭐ This repository grows as I learn.
